@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+virtual_factory/__init__.py
+virtual_factory/flask_app.py
+virtual_factory.egg-info/PKG-INFO
+virtual_factory.egg-info/SOURCES.txt
+virtual_factory.egg-info/dependency_links.txt
+virtual_factory.egg-info/requires.txt
+virtual_factory.egg-info/top_level.txt

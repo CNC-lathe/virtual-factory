@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: virtual-factory
+Version: 0.0.1
+Summary: Virtual Factory, for use by Virginia Tech ISE Department
+Home-page: https://github.com/CNC-lathe/virtual-factory
+Author: Ryan Singman
+Author-email: ryanjs@vt.edu
+License: UNKNOWN
+Project-URL: Issue Tracker, https://github.com/CNC-lathe/virtual-factory
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# digital-dashboard
+Virtual Factory web app, used to receive and display graphical machine data from Learning Factory in real-time.
+
+## Installation Instructions
+First, ensure that you have the latest build tools installed on your machine:
+```
+python3 -m pip install --upgrade build
+python3 -m build
+```
+
+Then, you can install the `virtual-factory` package as follows:
+```
+python3 -m pip install -e .
+```
+
+## Testing Instructions
+You can run the integration test with the following command:
+```
+python tests/test_integration.py
+```
+
+

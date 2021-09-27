@@ -1,0 +1,3 @@
+pyzmq>=22.0.3
+pyyaml>=5.4.1
+lf_utils@ git+https://github.com/CNC-lathe/lf-utils.git
