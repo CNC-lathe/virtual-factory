@@ -1,4 +1,4 @@
-# digital-dashboard
+# virtual-factory
 Virtual Factory web app, used to receive and display graphical machine data from Learning Factory in real-time.
 
 ## Installation Instructions
