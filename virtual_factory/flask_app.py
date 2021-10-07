@@ -54,8 +54,8 @@ class FlaskApp(threading.Thread):
 
     def create_routes(self):
         """Creates flask API routes."""
-        self.flask_app.add_url_rule('/', None, self.virtual_factory_page)
-        self.flask_app.add_url_rule('/_machines', None, self.virtual_factory_machines)
+        self.flask_app.add_url_rule("/", None, self.virtual_factory_page)
+        self.flask_app.add_url_rule("/_machines", None, self.virtual_factory_machines)
         self.flask_app.add_url_rule("/static/<path:path>", None, self.send_static)
 
     def virtual_factory_page(self) -> str:
