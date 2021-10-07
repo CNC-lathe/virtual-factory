@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Any, Dict, Optional
 
 import flask
 import threading
@@ -78,14 +78,13 @@ class FlaskApp(threading.Thread):
         str
             HTML string of rendered virtual factory machine images
         """
-        print("IN VIRTUAL FACTORY MACHINES")
         # get machine data from socket
         machine_data = self.data_socket.recv_pyobj()
 
         # get images to show
         images = [
-            "static/images/haas/base.png",
-            "static/images/ecoca/base.png",
+            self._get_haas_image(machine_data),
+            self._get_ecoca_image(machine_data),
         ]
 
         return flask.render_template(
@@ -102,3 +101,55 @@ class FlaskApp(threading.Thread):
             static file requested
         """
         return flask.send_from_directory("static", path)
+
+    def _get_haas_image(self, machine_data: Dict[str, Any]) -> str:
+        """Returns path to Haas image to display based on machine data.
+
+        Parameters
+        ----------
+        machine_data : Dict[str, Any]
+            machine data dictionary from LF server
+
+        Returns
+        -------
+        str
+            path to haas image to display
+        """
+        door_open = f"{'open' if machine_data['haas']['door_open'] else 'closed'}"
+        power_on = f"{'on' if machine_data['haas']['input_voltage'] > 0 else 'off'}"
+        return self._static_path_for("haas", f"{door_open}_{power_on}")
+
+    def _get_ecoca_image(self, machine_data: Dict[str, Any]) -> str:
+        """Returns path to Ecoca image to display based on machine data.
+
+        Parameters
+        ----------
+        machine_data : Dict[str, Any]
+            machine data dictionary from LF server
+
+        Returns
+        -------
+        str
+            path to ecoca image to display
+        """
+        door_open = f"{'open' if machine_data['ecoca']['door_open'] else 'closed'}"
+        power_on = f"{'on' if machine_data['ecoca']['input_voltage'] > 0 else 'off'}"
+        return self._static_path_for("ecoca", f"{door_open}_{power_on}")
+
+    @staticmethod
+    def _static_path_for(machine_name: str, img_name: str) -> str:
+        """Returns static path for image from machine and image name.
+
+        Parameters
+        ----------
+        machine_name : str
+            name of machine to get image for
+        img_name : str
+            name of image of machine
+
+        Returns
+        -------
+        str
+            path to static image
+        """
+        return f"static/images/{machine_name}/{img_name}.png"

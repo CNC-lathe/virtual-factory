@@ -5,10 +5,10 @@ function virtualMachineQuery() {
             $("#virtual_machines").html(data)
         }
     });
-    setTimeout(virtualMachineQuery, 10000);
+    setTimeout(virtualMachineQuery, 1000);
 }
 
 $(document).ready(function() {
     console.log("testing");
-    setTimeout(virtualMachineQuery, 10000);
+    setTimeout(virtualMachineQuery, 1000);
 })
