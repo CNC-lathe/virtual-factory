@@ -1,11 +1,9 @@
-from typing import Any, Dict, List, Optional
-import copy
+from typing import List, Optional
 
 import flask
 import threading
 import zmq
 
-from lf_utils.config_utils import instantiate
 import lf_utils
 
 
@@ -39,7 +37,9 @@ class FlaskApp(threading.Thread):
         )
 
         # create flask app
-        self.flask_app = flask.Flask(__name__)
+        self.flask_app = flask.Flask(
+            __name__, static_url_path="", template_folder="./templates/"
+        )
 
         # create flask routes
         self.create_routes()
@@ -54,7 +54,51 @@ class FlaskApp(threading.Thread):
 
     def create_routes(self):
         """Creates flask API routes."""
-        self.flask_app.add_url_rule('/', None, self.test)
+        self.flask_app.add_url_rule('/', None, self.virtual_factory_page)
+        self.flask_app.add_url_rule('/_machines', None, self.virtual_factory_machines)
+        self.flask_app.add_url_rule("/static/<path:path>", None, self.send_static)
 
-    def test(self):
-        return "Hello world!"
+    def virtual_factory_page(self) -> str:
+        """Renders and returns virtual factory page.
+
+        Returns
+        -------
+        str
+            HTML string of rendered virtual factory page
+        """
+        return flask.render_template(
+            "virtual_factory.html",
+        )
+
+    def virtual_factory_machines(self) -> str:
+        """Renders and returns virtual factory machines.
+
+        Returns
+        -------
+        str
+            HTML string of rendered virtual factory machine images
+        """
+        print("IN VIRTUAL FACTORY MACHINES")
+        # get machine data from socket
+        machine_data = self.data_socket.recv_pyobj()
+
+        # get images to show
+        images = [
+            "static/images/haas/base.png",
+            "static/images/ecoca/base.png",
+        ]
+
+        return flask.render_template(
+            "virtual_machines.html",
+            machine_images=images,
+        )
+
+    def send_static(self, path: str) -> flask.Response:
+        """Sends static file.
+
+        Returns
+        -------
+        flask.Response
+            static file requested
+        """
+        return flask.send_from_directory("static", path)
